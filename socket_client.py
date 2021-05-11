@@ -3,6 +3,7 @@ import os
 import sys
 
 clientSock = socket(AF_INET, SOCK_STREAM)
+# 라즈베리파이 번호
 clientSock.connect(('192.168.0.54', 8080))
 
 print('연결에 성공했습니다.')
