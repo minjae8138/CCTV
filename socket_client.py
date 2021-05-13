@@ -2,12 +2,14 @@ from socket import *
 import os
 import sys
 
+
 clientSock = socket(AF_INET, SOCK_STREAM)
 # 라즈베리파이 번호
 clientSock.connect(('192.168.0.54', 8080))
 
+
 print('연결에 성공했습니다.')
-filename = input('date20210504_0829.jpg')
+filename = 'cam.jpg'
 clientSock.sendall(filename.encode('utf-8'))
 
 data = clientSock.recv(1024)
