@@ -32,6 +32,7 @@ def on_message(client,userdata,msg):
     myval = msg.payload.decode("utf-8")
     print("메세지도착 " + str(myval))
     if str(myval) == 'videostreaming':
+        # 이미지 파일 전송
         f = open("/home/pi/Pictures/cam.jpg", "rb")
         imagebin = f.read()
         byteArray = bytearray(imagebin)

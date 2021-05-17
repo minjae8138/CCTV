@@ -1,54 +1,58 @@
-from socket import *
-from os.path import exists
-import sys
-import PirSensor
-import Camera
-import RPi.GPIO as GPIO
+import socket
 
 
-class SocketServer():
-    def sendpicture(self,filename):
-        serverSock = socket(AF_INET, SOCK_STREAM)
-        serverSock.bind(('', 8080))
-        serverSock.listen(1)
-        connectionSock, addr = serverSock.accept()
-        print(str(addr), '에서 접속했습니다')
-        #filename = self.connectionSock.recv(1024) #클라이언트한테 파일이름(이진 바이트 스트림 형태)을 전달 받는다
-        #print('받은 데이터 : ', filename.decode('utf-8')) #파일 이름을 일반 문자열로 변환한다
-        data_transferred = 0
+# 접속할 서버 주소입니다. 여기에서는 루프백(loopback) 인터페이스 주소 즉 localhost를 사용합니다.
+HOST = 'ec2-52-78-81-16.ap-northeast-2.compute.amazonaws.com'
 
-        if not exists(filename):
-            print("no file")
-            sys.exit()
-
-        print("파일 %s 전송 시작" %filename)
-        with open(filename, 'rb') as f:
-            try:
-                data = f.read(1024) #1024바이트 읽는다
-                while data: #데이터가 없을 때까지
-                    data_transferred += connectionSock.send(data) #1024바이트 보내고 크기 저장
-                    data = f.read(1024) #1024바이트 읽음
-            except Exception as ex:
-                print(ex)
-        print("전송완료 %s, 전송량 %d" %(filename, data_transferred))
+# 클라이언트 접속을 대기하는 포트 번호입니다.
+PORT = 9999
 
 
-if __name__ == "__main__":
-    try:
-        socket_server = SocketServer()
-        pir = PirSensor.Pir()
-        pir.start()
-        camera = Camera.Camera()
-        while True:
-            if pir.value == 'motion detect':
-                #사진찍어
-                filename = camera.takepicture()
-                #?????????
-                #TypeError: 'SocketServer' object is not callable
-                socket_server.sendpicture(filename)
-            else:
-                #사진 그만찍어
-                camera.stop()
-    except KeyboardInterrupt:
-        camera.stop()
-        GPIO.cleanup()
+
+# 소켓 객체를 생성합니다.
+# 주소 체계(address family)로 IPv4, 소켓 타입으로 TCP 사용합니다.
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+
+# 포트 사용중이라 연결할 수 없다는
+# WinError 10048 에러 해결를 위해 필요합니다.
+server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
+
+# bind 함수는 소켓을 특정 네트워크 인터페이스와 포트 번호에 연결하는데 사용됩니다.
+# HOST는 hostname, ip address, 빈 문자열 ""이 될 수 있습니다.
+# 빈 문자열이면 모든 네트워크 인터페이스로부터의 접속을 허용합니다.
+# PORT는 1-65535 사이의 숫자를 사용할 수 있습니다.
+server_socket.bind((HOST, PORT))
+
+# 서버가 클라이언트의 접속을 허용하도록 합니다.
+server_socket.listen()
+
+# accept 함수에서 대기하다가 클라이언트가 접속하면 새로운 소켓을 리턴합니다.
+client_socket, addr = server_socket.accept()
+
+# 접속한 클라이언트의 주소입니다.
+print('Connected by', addr)
+
+
+
+# 무한루프를 돌면서
+while True:
+    # 클라이언트가 보낸 메시지를 수신하기 위해 대기합니다.
+    data = client_socket.recv(1024)
+
+    # 빈 문자열을 수신하면 루프를 중지합니다.
+    if not data:
+        break
+
+
+    # 수신받은 문자열을 출력합니다.
+    print('Received from', addr, data.decode())
+
+    # 받은 문자열을 다시 클라이언트로 전송해줍니다.(에코)
+    client_socket.sendall(data)
+
+
+# 소켓을 닫습니다.
+client_socket.close()
+server_socket.close()
