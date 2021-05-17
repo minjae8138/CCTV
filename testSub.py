@@ -4,7 +4,7 @@ import PIL
 import PIL.Image as pilimg
 from PIL import Image
 
-publish.single("mydata/whoareyou/request", "videostreaming", hostname="192.168.0.55")
+publish.single("mydata/whoareyou/request", "videostreaming", hostname="ec2-52-78-81-16.ap-northeast-2.compute.amazonaws.com")
 
 
 # on_connect는 subscriber가 브로커에 연결하면서 호출할 함수, rc가 0이면 정상 연결이 됐다는 의미
