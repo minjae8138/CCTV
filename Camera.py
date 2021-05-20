@@ -5,22 +5,20 @@ import datetime
 
 class Camera():
     def __init__(self):
-        # íŒŒì¼ë¡œ ì €ì¥í•˜ê¸°
+        # ÆÄÀÏ·Î ÀúÀåÇÏ±â
         super().__init__()
         self.camera = PiCamera()
-        # ì‚¬ì§„ì„ 180ë„ íšŒì „í•´ì„œ ì¶œë ¥í•œë‹¤.
+        # »çÁøÀ» 180µµ È¸ÀüÇØ¼­ Ãâ·ÂÇÑ´Ù.
         self.camera.rotation = 180
         self.camera.start_preview()
-        sleep(2)
+        sleep(1)
 
     def takepicture(self):
         now = datetime.datetime.now()
-        sleep(2)
-        filename = '/home/pi/whoareyou/images/%s.jpg' % now
-        print(filename + "ì‚¬ì§„ì´ ìƒì„±ë˜ì—ˆìŠµë‹ˆë‹¤.")
+        filename = '/home/pi/Pictures/%s.jpg' % now
         self.camera.capture(filename)
         return filename
 
     def stop(self):
-        self.camera.stop_preview() # ë¯¸ë¦¬ë³´ê¸° í™”ë©´ ì •ì§€
+        self.camera.stop_preview() # ¹Ì¸®º¸±â È­¸é Á¤Áö
 

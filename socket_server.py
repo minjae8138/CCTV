@@ -42,10 +42,10 @@ if __name__ == "__main__":
         while True:
             if pir.value == 'motion detect':
                 #사진찍어
-                filename = camera.takepicture()
+                #filename = camera.takepicture()
                 #?????????
                 #TypeError: 'SocketServer' object is not callable
-                socket_server.sendpicture(filename)
+                socket_server.sendpicture('test.jpg')
             else:
                 #사진 그만찍어
                 camera.stop()

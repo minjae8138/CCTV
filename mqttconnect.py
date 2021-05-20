@@ -3,7 +3,7 @@ import paho.mqtt.publish as publish
 
 from pir import Pir
 import RPi.GPIO as GPIO
-from MyCamera import MyCamera
+import Camera
 
 
 #import ArduinoSensorUART
@@ -32,7 +32,7 @@ def on_message(client,userdata,msg):
     myval = msg.payload.decode("utf-8")
     print("메세지도착 " + str(myval))
     if str(myval) == 'videostreaming':
-        f = open("/home/pi/whoareyou/cam2.jpg", "rb")
+        f = open("/home/pi/Pictures/cam.jpg", "rb")
         imagebin = f.read()
         byteArray = bytearray(imagebin)
         mqttClient.publish("mydata/whoareyou/getimage", byteArray, 0)
@@ -42,10 +42,14 @@ def on_message(client,userdata,msg):
 mqttClient = mqtt.Client()
 mqttClient.on_connect = on_connect
 mqttClient.on_message = on_message
-mqttClient.connect("192.168.0.55", 1883, 60)
+mqttClient.connect("ec2-52-78-81-16.ap-northeast-2.compute.amazonaws.com", 1883, 60)
 
-pir = Pir(mqttClient, "")
+
+camera = Camera.Camera()
+
+pir = Pir(camera)
 pir.start()
+
 
 #ard = ArduinoSensorUART.Arduino(mqttClient, "")
 #ard.start()
