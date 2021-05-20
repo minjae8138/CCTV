@@ -2,13 +2,10 @@ import paho.mqtt.client as mqtt;
 import PIL
 import PIL.Image as pilimg
 from PIL import Image
-<<<<<<< HEAD
 import datetime
-=======
 
 publish.single("mydata/whoareyou/request", "videostreaming", hostname="ec2-52-78-81-16.ap-northeast-2.compute.amazonaws.com")
 
->>>>>>> 8215553bf873d8797daddb49c81e07f094780de0
 
 # on_connect는 subscriber가 브로커에 연결하면서 호출할 함수, rc가 0이면 정상 연결이 됐다는 의미
 def on_connect(client, userdata, flags, rc):
@@ -25,12 +22,7 @@ def on_message(client, userdata, msg):
     f = open(filename, "wb");
     f.write(msg.payload);
     f.close();
-<<<<<<< HEAD
-
     im = Image.open(filename);
-=======
-    im = Image.open("image1.jpg");
->>>>>>> 8215553bf873d8797daddb49c81e07f094780de0
     image_bytes2 = im.tobytes()
     new_image = pilimg.frombytes("RGB", (im.width, im.height), image_bytes2)
     new_image.show()
