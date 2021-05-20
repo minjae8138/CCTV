@@ -1,8 +1,4 @@
-from flask import Flask, render_template, request, Response
 import MyCamera
-
-app = Flask(__name__)
-
 
 def show(camera):
     while True:

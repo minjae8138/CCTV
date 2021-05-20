@@ -30,13 +30,17 @@ def on_message(client,userdata,msg):
     GPIO.setmode(GPIO.BCM)
     global pir
     myval = msg.payload.decode("utf-8")
-    print("메세지도착 " + str(myval))
-    if str(myval) == 'videostreaming':
-        f = open("/home/pi/Pictures/cam.jpg", "rb")
-        imagebin = f.read()
-        byteArray = bytearray(imagebin)
-        mqttClient.publish("mydata/whoareyou/getimage", byteArray, 0)
-        # 비디오스트리밍 시작
+#     print("메세지도착 " + str(myval))
+#     if str(myval) == 'videostreaming':
+# <<<<<<< HEAD
+# =======
+#         # 이미지 파일 전송
+# >>>>>>> 8215553bf873d8797daddb49c81e07f094780de0
+#         f = open("/home/pi/Pictures/cam.jpg", "rb")
+#         imagebin = f.read()
+#         byteArray = bytearray(imagebin)
+#         mqttClient.publish("mydata/whoareyou/getimage", byteArray, 0)
+#         # 비디오스트리밍 시작
 
 
 mqttClient = mqtt.Client()
