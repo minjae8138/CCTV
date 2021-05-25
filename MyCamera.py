@@ -9,6 +9,7 @@ class MyCamera:
     thread = None
     frame = None
     start_time = 0
+
     # streaming이라는 함수를 쓰레드로 관리하고 화면을 보내주는 함수
     def getStreaming(self):
         MyCamera.start_time = time.time()
@@ -24,7 +25,7 @@ class MyCamera:
     @classmethod
     def streaming(c):
         with picamera.PiCamera() as camera:
-            camera.resolution = (320, 240)
+            camera.resolution = (640, 480)
             camera.hflip = True
             camera.vflip = True
 
@@ -34,15 +35,12 @@ class MyCamera:
             stream = io.BytesIO()
             # 캡쳐한 것을 지속적으로 스트림에 jpeg형식으로 저장
             #  캡춰 실행시 비디오 포트 True 세팅으로 해결
-            #  디폴트 값인 이미지 포트(Image port)를 사용하면
-            #  동작은 느리지만 고화질 사진을 얻을 수 있음.
+            #  디폴트 값인 이미지 포트(Image port)를 사용하면     동작은 느리지만 고화질 사진을 얻을 수 있음.
 
             for f in camera.capture_continuous(stream, "jpeg", use_video_port=True):
-                #seek 함수는 해당 위치로 파일의 커서를 옮깁니다.
-                # 파일의 맨 처음 위치는 0 입니다.
+                #seek 함수는 해당 위치로 파일의 커서를 옮깁니다. 파일의 맨 처음 위치는 0 입니다.
                 stream.seek(0)
                 c.frame = stream.read()
-                # 파일 내용을 비움(
+                # 파일            내용을                비움(
                 stream.seek(0)
                 stream.truncate()
-
