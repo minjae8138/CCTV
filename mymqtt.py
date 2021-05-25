@@ -1,6 +1,7 @@
 import paho.mqtt.client as mqtt
 import MyCamera
 import paho.mqtt.publish as publish
+import base64
 
 
 class MyMqtt():
@@ -28,6 +29,7 @@ class MyMqtt():
         if myval == "start":
             while True:
                 frame = self.camera.getStreaming()
+                frame = "data:image/jpeg;base64,"+frame.decode("utf-8")
                 publish.single("web", frame, hostname="192.168.0.62")
         else:
             pass
