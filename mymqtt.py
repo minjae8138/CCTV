@@ -28,7 +28,7 @@ class MyMqtt():
         if myval == "start":
             while True:
                 frame = self.camera.getStreaming()
-                publish.single("web", str(frame), hostname="192.168.0.62")
+                publish.single("web", frame, hostname="192.168.0.62")
         else:
             pass
 
