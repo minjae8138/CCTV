@@ -25,14 +25,14 @@ class Pir(Thread):
                 self.value = 'motion detect'
                 GPIO.output(LED, GPIO.HIGH)
                 print("on")
-                # »çÁøÃÔ¿µ
+                # ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿ï¿½
                 self.filename = self.camera.takepicture()
-                # »çÁøÀúÀå
-                # »çÁøÀü¼Û
+                # ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                # ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 f = open(self.filename, "rb")
                 imagebin = f.read()
                 byteArray = bytearray(imagebin)
-                publish.single("mydata/whoareyou/getimage", byteArray, hostname="ec2-52-78-81-16.ap-northeast-2.compute.amazonaws.com")
+                publish.single("mydata/whoareyou/getimage", byteArray, hostname="192.168.0.55")
 
             else:
                 self.value = 'off'

@@ -9,7 +9,7 @@ class MyMqtt():
         super().__init__()
         client = mqtt.Client()
         self.camera = MyCamera.MyCamera()
-        client.connect("192.168.0.62", 1883, 60)
+        client.connect("192.168.0.55", 1883, 60)
         client.on_connect = self.on_connect
         client.on_message = self.on_message
         client.loop_forever()
@@ -30,7 +30,7 @@ class MyMqtt():
             while True:
                 frame = self.camera.getStreaming()
                 frame = "data:image/jpeg;base64,"+frame.decode("utf-8")
-                publish.single("web", frame, hostname="192.168.0.62")
+                publish.single("web", frame, hostname="192.168.0.55")
         else:
             pass
 

@@ -46,7 +46,7 @@ def on_message(client,userdata,msg):
 mqttClient = mqtt.Client()
 mqttClient.on_connect = on_connect
 mqttClient.on_message = on_message
-mqttClient.connect("ec2-52-78-81-16.ap-northeast-2.compute.amazonaws.com", 1883, 60)
+mqttClient.connect("192.168.0.55", 1883, 60)
 
 
 camera = Camera.Camera()
