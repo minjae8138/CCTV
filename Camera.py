@@ -6,6 +6,7 @@ import datetime
 class Camera():
     def __init__(self):
         # 파일로 저장하기
+
         super().__init__()
         self.camera = PiCamera()
         # 사진을 180도 회전해서 출력한다.
