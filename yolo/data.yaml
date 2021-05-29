@@ -1,0 +1,8 @@
+train: ../content/drive/MyDrive/yolo/dataset/images/
+val: ../content/drive/MyDrive/yolo/dataset/images/
+
+# number of classes
+nc: 6
+
+# class names
+names: ['mask', 'hammer','gloves','knife','hat','bat']
